@@ -38,7 +38,7 @@ def get_sat_data(current_time,sat_name):
     return satellite(response['name'], np.array(temp_teme_p)*1000, np.array(temp_teme_v)*1000)
 
 def get_latlong(curr_time,dict,temp_time):
-    sat = dict[curr_time // 1000 -temp_time]
+    sat = dict[curr_time // 1000 - temp_time // 1000]
     t = Time(curr_time //1000 *1000, format='jd')
     teme_p = CartesianRepresentation(tuple(sat.pos/1000)*u.km)
     teme_v = CartesianDifferential(tuple(sat.vel/1000)*u.km/u.s)

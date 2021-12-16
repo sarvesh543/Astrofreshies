@@ -62,7 +62,9 @@ time.sleep(10)
 dictionaryOftime = {}
 cns = canvas(width = 1300,height = 700,background= color.black)
 cns_time = int(time.time())
+timeofsimstart = temp_time
 #change t to change time of simulation
+
 while t < 8*60*60:
     updateValues(test_sat)
     if int(time.time())- temp_time > 2*60*60*1000:
@@ -70,6 +72,7 @@ while t < 8*60*60:
         sat_name = 'placeholder'
         test_sat = getData.get_sat_data(temp_time,sat_name)
         temp_time = int(time.time())
+        print(getData.get_latlong(time.time(),dictionaryOftime,timeofsimstart))
     if len(dictionaryOftime) > 2*60*60:
         dictionaryOftime.pop(next(iter(dictionaryOftime)))
     dictionaryOftime[int(t)] = [test_sat.pos,test_sat.vel]
@@ -78,7 +81,7 @@ while t < 8*60*60:
         cns_time=int(time.time())
         display.updateDisplay(dictionaryOftime,cns)
 
-print(getData.get_latlong(time.time(),dictionaryOftime,temp_time))
+
     
 
 print()
