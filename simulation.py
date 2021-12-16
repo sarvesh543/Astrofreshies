@@ -2,12 +2,11 @@
 #import vpython could be used for graphics
 import time
 import numpy as np
-import math
-import requests
 from satellite import satellite
 from datetime import datetime
 import getData
 import display
+from vpython import *
 
 
 # with dt = 0.1; 24hrs of simulation takes 5 sec
@@ -60,6 +59,9 @@ print('Test Start')
 index = 0
 time.sleep(10)
 
+dictionaryOftime = {}
+cns = canvas(width = 1300,height = 700,background= color.black)
+cns_time = int(time.time())
 #change t to change time of simulation
 while t < 8*60*60:
     updateValues(test_sat)
@@ -68,8 +70,15 @@ while t < 8*60*60:
         sat_name = 'placeholder'
         test_sat = getData.get_sat_data(temp_time,sat_name)
         temp_time = int(time.time())
-    display.updateDisplay()
+    if len(dictionaryOftime) > 2*60*60:
+        dictionaryOftime.pop(next(iter(dictionaryOftime)))
+    dictionaryOftime[int(t)] = [test_sat.pos,test_sat.vel]
+    
+    if int(time.time()) - cns_time >5:
+        cns_time=int(time.time())
+        display.updateDisplay(dictionaryOftime,cns)
 
+print(getData.get_latlong(time.time(),dictionaryOftime,temp_time))
     
 
 print()

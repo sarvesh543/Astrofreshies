@@ -1,9 +1,8 @@
 from typing_extensions import runtime
-from astropy.coordinates import CartesianRepresentation, CartesianDifferential, TEME
+from astropy.coordinates import CartesianRepresentation, CartesianDifferential, TEME, ITRS
 from astropy import units as u
 from astropy.time import Time
 from sgp4.api import Satrec
-from sgp4.api import SGP4_ERRORS
 from satellite import satellite
 import numpy as np
 
@@ -36,4 +35,17 @@ def get_sat_data(current_time,sat_name):
     print(temp_teme_p,temp_teme_v)
     teme = TEME(teme_p.with_differentials(teme_v), obstime=t)
     
-    return satellite(response['name'], np.array(temp_teme_p), np.array(temp_teme_v))
+    return satellite(response['name'], np.array(temp_teme_p)*1000, np.array(temp_teme_v)*1000)
+
+def get_latlong(curr_time,dict,temp_time):
+    sat = dict[curr_time // 1000 -temp_time]
+    t = Time(curr_time //1000 *1000, format='jd')
+    teme_p = CartesianRepresentation(tuple(sat.pos/1000)*u.km)
+    teme_v = CartesianDifferential(tuple(sat.vel/1000)*u.km/u.s)
+    teme = TEME(teme_p.with_differentials(teme_v), obstime=t)
+    itrs = teme.transform_to(ITRS(obstime=t))  
+    location = itrs.earth_location
+    print(location.geodetic)
+    
+
+  
