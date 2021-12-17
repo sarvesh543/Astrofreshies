@@ -14,4 +14,6 @@
 2. We are giving the exact location of the satellite on the Earth in terms of Latitude and Longitude
 3. We had represented the whole satellite system graphically in 3-d view. Please have a look!
 
-
+# Screenshots
+![Screenshot 1](/scr1.png)
+![Screenshot 2](/scr2.png)
